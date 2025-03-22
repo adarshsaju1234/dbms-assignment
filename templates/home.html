@@ -1,2 +1,68 @@
-<h1>Welcome to Expense Tracker</h1>
-<a href="/register">Register</a> | <a href="/login">Login</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home | Expense Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('http://media.giphy.com/media/13ln9K5TWkNTLa/giphy.gif') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            backdrop-filter: blur(5px); /* subtle blur for readability over gif */
+        }
+        h1 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        p {
+            color: #34495e;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #00796b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #004d40;
+        }
+        .icon {
+            width: 60px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://img.icons8.com/ios-filled/100/00796b/wallet--v1.png" alt="wallet icon" class="icon">
+        <h1>Welcome to Expense Tracker</h1>
+        <p>Track your expenses, categorize them, and gain insights into your spending habits.</p>
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+        <a href="{{ url_for('register') }}" class="btn">Register</a>
+    </div>
+</body>
+</html>
