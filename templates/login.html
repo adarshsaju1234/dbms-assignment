@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dashboard | Expense Tracker</title>
+    <title>Login | Expense Tracker</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding-top: 70px;
+            height: 100vh;
             background: linear-gradient(135deg, #e0f7e9, #b2f2bb, #81d4fa);
             background-size: 400% 400%;
             animation: gradientMove 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
         }
 
         @keyframes gradientMove {
@@ -21,7 +27,7 @@
         }
 
         .navbar {
-            position: fixed;
+            position: absolute;
             top: 0;
             width: 100%;
             padding: 1rem 2rem;
@@ -31,160 +37,139 @@
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             z-index: 2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-left: 50px;
         }
 
-        .navbar a {
-            color: #ffd700;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
-            margin-right:80px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
+        .login-container {
+            background: #fefefe;
+            border: 2px solid #b2f2bb;
+            padding: 2rem 3rem;
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 128, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            z-index: 2;
         }
 
-        h2, h3, h4 {
+        h2 {
+            margin-bottom: 1.5rem;
             color: #2e7d32;
-            margin-bottom: 1rem;
         }
 
-        .list-group-item {
-            background-color: #f0fff0;
-            margin-bottom: 0.5rem;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 128, 0, 0.1);
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0 1rem 0;
+            border: 1px solid #b2f2bb;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #f0fff0;
         }
 
-        .btn-primary {
+        button {
+            width: 100%;
+            padding: 0.75rem;
             background: linear-gradient(90deg, #ffd700, #ffb300);
             border: none;
+            border-radius: 6px;
             color: #2e7d32;
             font-weight: bold;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease, background 0.3s ease;
         }
 
-        .btn-primary:hover {
+        button:hover {
             background: linear-gradient(90deg, #ffb300, #ffd700);
             transform: scale(1.03);
         }
 
-        table {
-            background: white;
-            margin-top: 1rem;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        /* === Form Enhancements === */
-        form {
-            margin-top: 2rem;
-            background-color: #f7fff7;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #2e7d32;
-        }
-
-        .form-control, .form-select {
-            width: 100%;
-            padding: 0.6rem 0.75rem;
+        .error {
+            color: red;
+            font-size: 0.9rem;
             margin-bottom: 1rem;
-            border: 1px solid #b2f2bb;
-            border-radius: 8px;
-            background-color: #f0fff0;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-size: 1rem;
         }
 
-        .form-control:focus, .form-select:focus {
-            border-color: #81d4fa;
-            box-shadow: 0 0 8px rgba(129, 212, 250, 0.4);
-            outline: none;
+        .register-link {
+            margin-top: 1rem;
+        }
+
+        .register-link a {
+            text-decoration: none;
+            color: #388e3c;
+            font-weight: bold;
+        }
+
+        .money-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: floatUp 10s linear infinite;
+            color: #2ecc71;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        Expense Tracker
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </div>
+    <div class="navbar">Expense Tracker</div>
 
-    <div class="container mt-4">
-        <h2>Welcome, {{ current_user.username }}</h2>
-        <h3>Total Expenses: ₹{{ total }}</h3>
-
-        <h4>Expenses by Category</h4>
-        <ul class="list-group">
-            {% for category in category_expenses %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ category.name }}
-                    <span class="badge bg-primary">₹{{ category.total }}</span>
-                </li>
+    <div class="login-container">
+        <h2>Login</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="error">{{ message }}</div>
             {% endfor %}
-        </ul>
+          {% endif %}
+        {% endwith %}
 
-        <!-- Expense Entry Form -->
-        <h4 class="mt-5">Add an Expense</h4>
-        <form method="POST" action="{{ url_for('dashboard') }}">
-            <label for="category" class="form-label">Category</label>
-            <select class="form-select" name="category" required>
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
+        <form id="loginForm" method="POST" action="{{ url_for('login') }}">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
 
-            <label for="amount" class="form-label">Amount (₹)</label>
-            <input type="number" class="form-control" name="amount" placeholder="Enter amount" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
 
-            <label for="date" class="form-label">Date</label>
-            <input type="date" class="form-control" name="date" required>
-
-            <div style="text-align: right; margin-top: 1.5rem;">
-                <button type="submit" class="btn btn-primary">Add Expense</button>
-            </div>
+            <button type="submit">Login</button>
         </form>
 
-        <h4 class="mt-5">All Expenses</h4>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Category</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in expenses %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ expense.category }}</td>
-                    <td>₹{{ expense.amount }}</td>
-                    <td>{{ expense.date }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="register-link">
+            Don't have an account? <a href="{{ url_for('register') }}">Register</a>
+        </div>
     </div>
+
+    <!-- Floating Money Icons -->
+    <div class="money-icon" style="left: 10%; animation-delay: 0s;">💵</div>
+    <div class="money-icon" style="left: 30%; animation-delay: 2s;">💰</div>
+    <div class="money-icon" style="left: 50%; animation-delay: 4s;">💸</div>
+    <div class="money-icon" style="left: 70%; animation-delay: 6s;">💵</div>
+    <div class="money-icon" style="left: 90%; animation-delay: 8s;">💰</div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!email || !password) {
+                e.preventDefault();
+                alert("Please fill out both fields.");
+            }
+        });
+    </script>
 </body>
 </html>
